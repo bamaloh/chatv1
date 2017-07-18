@@ -1,2 +1,261 @@
-<h1>Chat#index</h1>
-<p>Find me in app/views/chat/index.html.erb</p>
+<style>
+ .containerx{
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   align-items: stretch;
+   align-content: stretch;
+   width: 100%;
+   height: 100vh;
+   background: #DDD;
+ }
+
+
+ .item{
+   display: block;
+   flex: 1;
+   overflow: scroll;
+ }
+
+
+ .container-msg{
+   padding: 5px;
+ }
+
+ .msg {
+   display: inline-block;
+ }
+
+ .container-input{
+   flex:.1;
+ }
+ .bot{
+   text-align:left;
+ }
+ .human{
+   text-align:right;
+ }
+
+
+/*Speech bubble for left side*/
+ .bubble-robot{
+   position: relative;
+   background: #AFAFAF;
+   /*border: 1px solid #000000;*/
+    max-width: 550px;
+    padding:10px;
+    font-family:arial;
+    /*margin:0 auto;*/
+    font-size:14px;
+    border-radius:6px;
+ }
+ .bubble-robot:before{
+   right: 100%;
+   bottom: 10px;
+   border: solid transparent;
+   content: " ";
+   height: 0;
+   width: 0;
+   position: absolute;
+   pointer-events: none;
+ }
+ .bubble-robot:before{
+   border-color: rgba(255, 204, 0, 0);
+   border-right-color: #AFAFAF;
+   border-width: 10px;
+   margin-top: -10px;
+ }
+
+
+
+/*Speech bubble for right side*/
+.bubble-human{
+  position: relative;
+  background: #AFAFAF;
+   max-width: 550px;
+   padding:10px;
+   font-family:arial;
+   /*margin:0 auto;*/
+   font-size:14px;
+   border-radius:6px;
+}
+.bubble-human:before{
+  left: 100%;
+  bottom: 10px;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.bubble-human:before{
+  border-color: rgba(255, 204, 0, 0);
+  border-left-color: #AFAFAF;
+  border-width: 10px;
+  margin-top: -10px;
+}
+
+
+
+/*Left side (Robot)*/
+ .chat-table{
+   width: 100%;
+   margin-bottom:10px;
+ }
+
+ .chat-table.left .icon{
+   width: 10%;
+ }
+ .chat-table.left .speech{
+    width: 90%;
+    padding-left: 10px;
+  }
+  .chat-table td{
+    vertical-align: bottom;
+   }
+  .icon img{
+    width: 100%;
+  }
+
+
+/*Right side (Human)*/
+  .chat-table{
+    width: 100%;
+    margin-bottom:10px;
+  }
+
+  .chat-table.right .icon{
+    width: 10%;
+  }
+  .chat-table.right .speech{
+     width: 90%;
+     padding-right: 10px;
+     text-align: right;
+   }
+   .chat-table td{
+     vertical-align: bottom;
+    }
+</style>
+
+
+<div class ="containerx">
+  <div class ="item container-msg">
+    <!-- <div class ="msg bot bubble-robot"> <%= image_tag("robot", :style => "width:50px; height:50px") %> Eh yo! What do you want?</div>
+    <div class ="msg human bubble-human"> Hungry lei. <%= image_tag("human", :style => "width:50px; height:50px") %> </div>
+    <div class ="msg bot bubble-robot"> <%= image_tag("robot", :style => "width:50px; height:50px") %> Do you want to look for nearby places to eat?</div>
+    <div class ="msg human"> <%= image_tag("human", :style => "width:50px; height:50px") %> </div>
+    <div class ="msg bot"> <%= image_tag("robot", :style => "width:50px; height:50px") %> </div>
+    <div class ="msg human"> <%= image_tag("human", :style => "width:50px; height:50px") %> </div>
+    <div class ="msg bot"> <%= image_tag("robot", :style => "width:50px; height:50px") %> </div>
+    <div class ="msg human"> <%= image_tag("human", :style => "width:50px; height:50px") %> </div>
+    <div class ="msg bot"> <%= image_tag("robot", :style => "width:50px; height:50px") %> </div>
+    <div class ="msg human"> <%= image_tag("human", :style => "width:50px; height:50px") %> </div>
+    <div class ="msg bot"> <%= image_tag("robot", :style => "width:50px; height:50px") %> </div>
+    <div class ="msg human"> <%= image_tag("human", :style => "width:50px; height:50px") %> </div>
+    <div class ="msg bot"> <%= image_tag("robot", :style => "width:50px; height:50px") %> </div> -->
+
+    <!--
+    <table class="chat-table left">
+      <tr>
+        <td class="icon"><%= image_tag("robot") %></td>
+        <td class="speech"><div class ="msg bot bubble-robot">D ipsum.</div></td>
+      </tr>
+    </table>
+    <table class="chat-table right"
+      <tr>
+        <td class="speech"><div class ="msg human bubble-human">ipsum D.</div></td>
+        <td class="icon"><%= image_tag("human") %></td>
+      </tr>
+    </table>
+    <table class="chat-table left">
+      <tr>
+        <td class="icon"><%= image_tag("robot") %></td>
+        <td class="speech"><div class ="msg bot bubble-robot">Duis hendrerit fringilla justo, ac sagittis ante semper sed. Vestibulum mollis nibh id urna tempor molestie. Quisque vel ex et mi fringilla tristique. Nulla lobortis id nisi sit amet varius. Integer eu neque eu tortor porttitor rhoncus. Maecenas ac ultrices purus. Cras imperdiet vulputate erat. Ut tempor risus at pharetra lobortis. Nam dignissim, diam eu scelerisque elementum, leo nisi luctus libero, quis sodales lectus quam nec ipsum.</div></td>
+      </tr>
+    </table>
+    <table class="chat-table left">
+      <tr>
+        <td class="icon"><%= image_tag("robot") %></td>
+        <td class="speech"><div class ="msg bot bubble-robot">D ipsum.</div></td>
+      </tr>
+    </table>
+    <table class="chat-table right"
+      <tr>
+        <td class="speech"><div class ="msg human bubble-human">ipsum D.</div></td>
+        <td class="icon"><%= image_tag("human") %></td>
+      </tr>
+    </table>
+    <table class="chat-table left">
+      <tr>
+        <td class="icon"><%= image_tag("robot") %></td>
+        <td class="speech"><div class ="msg bot bubble-robot">D ipsum.</div></td>
+      </tr>
+    </table>
+    <table class="chat-table right"
+      <tr>
+        <td class="speech"><div class ="msg human bubble-human">ipsum D.</div></td>
+        <td class="icon"><%= image_tag("human") %></td>
+      </tr>
+    </table>
+    <table class="chat-table left">
+      <tr>
+        <td class="icon"><%= image_tag("robot") %></td>
+        <td class="speech"><div class ="msg bot bubble-robot">Duis hendrerit fringilla justo, ac sagittis ante semper sed. Vestibulum mollis nibh id urna tempor molestie. Quisque vel ex et mi fringilla tristique. Nulla lobortis id nisi sit amet varius. Integer eu neque eu tortor porttitor rhoncus. Maecenas ac ultrices purus. Cras imperdiet vulputate erat. Ut tempor risus at pharetra lobortis. Nam dignissim, diam eu scelerisque elementum, leo nisi luctus libero, quis sodales lectus quam nec ipsum.</div></td>
+      </tr>
+    </table>
+    <table class="chat-table left">
+      <tr>
+        <td class="icon"><%= image_tag("robot") %></td>
+        <td class="speech"><div class ="msg bot bubble-robot">D ipsum.</div></td>
+      </tr>
+    </table>
+-->
+
+</div>
+
+
+  <div class ="item container-input">
+    <div class="form-group">
+      <form id="chat-form">
+        <input class="form-control" type="text" id="userinput" name="userinput" placeholder="Say something...">
+      </form>
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+function render_msg(msg){
+  var temp = decodeURI(msg).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  var chat = '<table class="chat-table right"<tr><td class="speech"><div class ="msg human bubble-human">'+temp+'</div></td><td class="icon"><%= image_tag("human") %></td></tr></table>';
+  $(".container-msg").append(chat);
+  $(".container-msg").animate({ scrollTop: $('.container-msg').prop("scrollHeight")}, 100);
+}
+$( "#chat-form" ).submit(function( event ) {
+  if ( $( "input:first" ).val() === "" ) {
+    return false;
+  }
+
+  var user_msg = encodeURI($("#userinput").val());
+  // alert(text);
+  $.post( "./chat", {user_msg: user_msg })
+  .done(function( data ) {
+  render_msg(data);
+  console.log("done");
+  });
+
+  $("#userinput").val("");
+  event.preventDefault();
+});
+</script>
+
+
+<script>
+var chats = <%=  @chats.to_json.html_safe %> ;
+$.each(chats,function( key,value ) {
+  render_msg(value.content);
+  // console.log(value);
+});
+</script>
