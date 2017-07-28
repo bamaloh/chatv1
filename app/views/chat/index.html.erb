@@ -1,3 +1,6 @@
+<% cookies.to_json %>
+
+
 <style>
  .containerx{
    display: flex;
@@ -20,6 +23,7 @@
 
  .container-msg{
    padding: 5px;
+   flex: .9;
  }
 
  .msg {
@@ -28,6 +32,7 @@
 
  .container-input{
    flex:.1;
+   min-height: 62px;
  }
  .bot{
    text-align:left;
@@ -218,7 +223,7 @@
   <div class ="item container-input">
     <div class="form-group">
       <form id="chat-form">
-        <input class="form-control" type="text" id="userinput" name="userinput" placeholder="Say something...">
+        <input class="form-control" type="text" id="userinput" name="userinput" placeholder="Say something..."> <%= link_to "Reset", reset_path%>
       </form>
     </div>
   </div>
@@ -227,12 +232,30 @@
 
 
 <script>
-function render_msg(msg){
+function render_msg(msg, from_id){
+
+  if (from_id == 0){
+    // If bot.
+    render_bot_msg(msg);
+  }
+  else{
+    render_human_msg(msg);
+  }
+}
+
+function render_human_msg(msg){
   var temp = decodeURI(msg).replace(/</g, "&lt;").replace(/>/g, "&gt;");
   var chat = '<table class="chat-table right"<tr><td class="speech"><div class ="msg human bubble-human">'+temp+'</div></td><td class="icon"><%= image_tag("human") %></td></tr></table>';
   $(".container-msg").append(chat);
   $(".container-msg").animate({ scrollTop: $('.container-msg').prop("scrollHeight")}, 100);
 }
+function render_bot_msg(msg){
+  var temp = decodeURI(msg).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  var chat = '<table class="chat-table left"<tr><td class="icon"><%= image_tag("robot") %></td><td class="speech"><div class ="msg bot bubble-robot">'+temp+'</div></td></tr></table>';
+  $(".container-msg").append(chat);
+  $(".container-msg").animate({ scrollTop: $('.container-msg').prop("scrollHeight")}, 100);
+}
+
 $( "#chat-form" ).submit(function( event ) {
   if ( $( "input:first" ).val() === "" ) {
     return false;
@@ -242,9 +265,41 @@ $( "#chat-form" ).submit(function( event ) {
   // alert(text);
   $.post( "./chat", {user_msg: user_msg })
   .done(function( data ) {
-  render_msg(data);
-  console.log("done");
+    render_human_msg(data);
+    bot_response(user_msg);
   });
+
+
+  function bot_response(user_msg=null){
+    if(user_msg){
+
+      $.post( "./bot_response", {user_msg: user_msg })
+      .done(function( data ) {
+        console.log(data);
+        if(data.type != "stop"){
+          if(data.type=="msg"){
+            render_bot_msg(data.msg);
+          }
+        bot_response();
+        }
+      });
+
+    }else{
+
+      $.post( "./bot_response" )
+      .done(function( data ) {
+        console.log(data);
+        if(data.type != "stop"){
+          if(data.type=="msg"){
+            render_bot_msg(data.msg);
+          }
+        bot_response();
+        }
+      });
+
+    }
+  }
+
 
   $("#userinput").val("");
   event.preventDefault();
@@ -253,9 +308,13 @@ $( "#chat-form" ).submit(function( event ) {
 
 
 <script>
+// Store current chat into 'chats' variable.
 var chats = <%=  @chats.to_json.html_safe %> ;
+
+// Function to print existing messages.
+// For each item in 'chats' render message.
 $.each(chats,function( key,value ) {
-  render_msg(value.content);
-  // console.log(value);
+  render_msg(value.content, value.from_id);
+  console.log (value.from_id);
 });
 </script>
